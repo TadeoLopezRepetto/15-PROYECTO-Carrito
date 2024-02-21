@@ -36,9 +36,19 @@ function eliminaCurso(e) {
     console.log(e.target)
     if (e.target.classList.contains('borrar-curso')) {
         const cursoId= e.target.getAttribute('data-id')
-        
-        articulosCarrito=articulosCarrito.filter(curso => curso.id !== cursoId )
-        carroHTML();
+
+        //eliminar cursos de a 1 
+        articulosCarrito.forEach(cursos =>{
+            if (cursoId===cursos.id) {
+                if (cursos.cantidad > 1) {
+                    cursos.cantidad --;
+                    carroHTML()
+                }else{
+                    articulosCarrito=articulosCarrito.filter(curso => curso.id !== cursoId )
+                    carroHTML();
+                }
+            }
+        })
     }
 }
 
@@ -65,8 +75,9 @@ function leerDatoCurso(curso) {
             else{
                 return curso; //retorna obj no son duplicado
             }
-        })
+        });
         articulosCarrito=[...cursos]
+        carroHTML()
         
     }else{
        //agregar compra a carrito
@@ -88,7 +99,7 @@ function carroHTML() {
         const row = document.createElement('tr')
         row.innerHTML = `
             <td>
-                <img src="${imagen}"  >
+                <img src="${imagen}" width=150px  >
             </td>
             <td>
                 ${titulo}
